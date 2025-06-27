@@ -5,6 +5,7 @@
  */
 package uscapitalsrmiclient;
 
+import java.net.MalformedURLException;
 import java.rmi.*;
 import uscapitalsrmiserver.US_States_Server_Interface;
 
@@ -32,7 +33,7 @@ public class US_States_Server_Client {
                 for (String y : stateArray) {
                     System.out.println(y);
                 }
-            } catch (Exception ex) {
+            } catch (MalformedURLException | NotBoundException | RemoteException ex) {
                 System.out.println(ex);
             }
         }

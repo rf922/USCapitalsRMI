@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  */
 public class US_States_Server extends UnicastRemoteObject implements US_States_Server_Interface {
 
-    private static final String US_CAPITALS_FILE_PATH = "C://Users//usr//Desktop//US_States";
+    private static final String US_CAPITALS_FILE_PATH = "capitals.csv";
     private static HashMap<String, String> statesMap;
     
     public US_States_Server() throws RemoteException{
@@ -81,7 +81,7 @@ public class US_States_Server extends UnicastRemoteObject implements US_States_S
             reg.rebind("US_States_Server", server);
             System.out.println("US_States_Server Up " );
             
-        }catch(Exception ex){
+        }catch(RemoteException ex){
             System.out.println(ex);
         }
     }
