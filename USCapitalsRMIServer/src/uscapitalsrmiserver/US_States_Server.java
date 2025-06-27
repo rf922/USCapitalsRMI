@@ -4,30 +4,25 @@
  * 
  */
 package uscapitalsrmiserver;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.rmi.RemoteException;
-import java.rmi.server.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 /**
  *
- * @author usr
+ * @author rf922
  */
 public class US_States_Server extends UnicastRemoteObject implements US_States_Server_Interface {
 
-    private static final String US_CAPITALS_FILE = "US_States";
+    private static final String US_CAPITALS_FILE_PATH = "C://Users//usr//Desktop//US_States";
     private static HashMap<String, String> statesMap;
     
     public US_States_Server() throws RemoteException{
@@ -41,7 +36,7 @@ public class US_States_Server extends UnicastRemoteObject implements US_States_S
         try {
             
             
-            resultArray = Files.lines(Path.of("C://Users//usr//Desktop//US_States"))
+            resultArray = Files.lines(Path.of(US_CAPITALS_FILE_PATH))
                     .skip(2)
                     .map(x -> x.split("\\s\\s+")[0].trim())
                     .filter(x -> {
@@ -63,7 +58,7 @@ public class US_States_Server extends UnicastRemoteObject implements US_States_S
         try {
             
             
-            resultArray = Files.lines(Path.of("C://Users//usr//Desktop//US_States"))
+            resultArray = Files.lines(Path.of(US_CAPITALS_FILE_PATH))
                     .skip(2)
                     .map(x -> x.split("\\s\\s+")[1].trim())
                     .filter(x -> {
