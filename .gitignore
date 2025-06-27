@@ -1,58 +1,54 @@
-
-
-# Compiled bytecode
-*.class
-
-# JARs, WARs, EARs 
+*.class                  # compiled bytecode
 *.jar
 *.war
 *.ear
 
-# Build output created by NetBeans  / Ant
+# Ignore every NetBeans project folder and its contents
+**/nbproject/
 
-*/build/
-*/dist/
+# **/nbproject/private/
+
+# NetBeans-generated Ant build scripts and manifests
+**/build.xml
+**/manifest.mf
+
+# Output directories created by NetBeans/Ant
+**/build/
+**/dist/
 nbbuild/
 nbdist/
 
-# NetBeans project metadata 
-nbproject/private/
-
-# Generated sources
-*/generated-sources/
+# Generated sources (annotation processors, etc.)
+**/generated-sources/
 **/build/generated-sources/
 
-
-# Eclipse, IntelliJ, VS Code
-.classpath
+# Other IDEs / editors                                     
+.classpath   # Eclipse
 .project
 .settings/
-.idea/
+.idea/       # IntelliJ / Android Studio
 *.iml
-.vscode/
+.vscode/     # VS Code
 
-
+# Operating-system                                 
 # macOS
 .DS_Store
 .AppleDouble
 .LSOverride
-
 # Windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
-
-# Linux
+# Linux & others
 *~
 
-# logs / tmp files
-
+# Logs, dumps, temp files                                  
 *.log
 *.tmp
 hs_err_pid*
 replay_pid*
 
-# Maven / Gradle wrapper jars 
+# Build-tool wrappers                                      
 .mvn/wrapper/maven-wrapper.jar
 gradle/wrapper/gradle-wrapper.jar
 
