@@ -22,17 +22,12 @@ public class US_States_Server_Client {
             try {
                 String url = "rmi://" + args[0] + "/US_States_Server";
                 US_States_Server_Interface srvObj = (US_States_Server_Interface) Naming.lookup(url);
-                String[] capitalArray = srvObj.getCapital(args[1]);
-                String[] stateArray = srvObj.getState(args[1]);
+                String capital = srvObj.getCapital(args[1]);
+                String state = srvObj.getState(args[1]);
                 System.out.println("Pattern Passed : " + args[1]);
-                System.out.println("Capital Matches :");
-                for (String y : capitalArray) {
-                    System.out.println(y);
-                }
-                System.out.println("State Matches :");
-                for (String y : stateArray) {
-                    System.out.println(y);
-                }
+                System.out.println("Capital Matches :" + capital);
+                System.out.println("State Matches :"+ state);
+
             } catch (MalformedURLException | NotBoundException | RemoteException ex) {
                 System.out.println(ex);
             }

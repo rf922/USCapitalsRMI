@@ -11,11 +11,13 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 /**
  *
  * @author rf922
@@ -23,55 +25,45 @@ import java.util.regex.Pattern;
 public class US_States_Server extends UnicastRemoteObject implements US_States_Server_Interface {
 
     private static final String US_CAPITALS_FILE_PATH = "capitals.csv";
-    private static HashMap<String, String> statesMap;
-    
+    private static HashMap<String, String> stateMap;
+    private static String[] resultArray = new String[]{"No results found "};
+            
     public US_States_Server() throws RemoteException{
         super();
+        parseDataFile();
+    }
+    
+    private static void parseDataFile(){
+        try {
+            stateMap = (HashMap<String, String>) Files.lines(Path.of(US_CAPITALS_FILE_PATH))
+                .skip(1)
+                .map(x -> x.split(","))
+                .filter(x -> x.length > 1)
+                .collect(Collectors.toMap(x -> x[0], x -> x[1]));
+            System.out.println("[US_STATES_SERVER] : State Map populated ");
+            System.out.println("[US_STATES_SERVER] : State Map entries " +stateMap.entrySet().size());
+        } catch (IOException ex) {
+            Logger.getLogger(US_States_Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
     }
     
     
     @Override
-    public String[] getCapital(String statePattern) throws RemoteException {
-            String[] resultArray = new String[]{"No results found "};
-        try {
-            
-            
-            resultArray = Files.lines(Path.of(US_CAPITALS_FILE_PATH))
-                    .skip(2)
-                    .map(x -> x.split("\\s\\s+")[0].trim())
-                    .filter(x -> {
-                        Pattern sp = Pattern.compile(statePattern);
-                        Matcher m = sp.matcher(x); 
-                        return m.find();
-                    })
-                    .toArray(String[]::new);
-            
-        } catch (IOException ex) {
-            Logger.getLogger(US_States_Server.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return resultArray;
+    public String getCapital(String statePattern) throws RemoteException {
+        String result = stateMap.getOrDefault(ref, "N/A");
+        System.out.println("[US_STATES_SERVER] : Received \'" + statePattern + "\'" );
+        System.out.println("[US_STATES_SERVER] : Yielded \'" + result + "\'" );
+        return result;
     }
 
     @Override
-    public String[] getState(String capitalPattern) throws RemoteException {
-            String[] resultArray = new String[]{"No results found "};
-        try {
-            
-            
-            resultArray = Files.lines(Path.of(US_CAPITALS_FILE_PATH))
-                    .skip(2)
-                    .map(x -> x.split("\\s\\s+")[1].trim())
-                    .filter(x -> {
-                        Pattern sp = Pattern.compile(capitalPattern);
-                        Matcher m = sp.matcher(x); 
-                        return m.find();
-                    })
-                    .toArray(String[]::new);
-            
-        } catch (IOException ex) {
-            Logger.getLogger(US_States_Server.class.getName()).log(Level.SEVERE, null, ex);
+    public String getState(String capitalPattern) throws RemoteException {
+        String result = "N/A";
+        if(stateMap.values().contains(capitalPattern)){
+            result = stateMap.entrySet().stream().filter(x -> x.getValue().equalsIgnoreCase(capitalPattern)).findFirst().get().getKey();
         }
-        return resultArray;
+        return result;
     }
     
     public static void main(String[] args){
